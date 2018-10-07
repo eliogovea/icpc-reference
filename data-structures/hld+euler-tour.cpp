@@ -1,4 +1,4 @@
-
+// useful for answer queries on subtrees and paths
 
 const int N = 100 * 1000 + 10;
 int n; vector<int> g[N];

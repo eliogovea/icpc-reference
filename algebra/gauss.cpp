@@ -67,7 +67,7 @@ vector <int> gauss(vector <vector <double>> A, vector <double> B, vector <double
 	return where;
 }
 
-
+// problem from kattis online judge
 int equationsolver() {
 	int n;
 	while (cin >> n && n) {

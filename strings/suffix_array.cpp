@@ -16,7 +16,7 @@ vector <int> normalize(vector <T> v) {
 // 0 < *min_element(v.begin(), v.end()) !!!
 vector <int> get_suffix_array(vector <int> v,
 															int alpha = -1) {
-	if (alpha == -1) alpha = v.size();
+	if (alpha == -1) alpha = v.size() + 1;
 	v.push_back(0); int n = v.size(), classes = alpha;
 	vector <int> cnt(max(n, alpha));
 	vector <int> p(n), np(n), c(n), nc(n);

@@ -81,7 +81,10 @@ void _centroid_decomposition(int now, int _parent = -1, int _depth = 0) {
 	parent[now] = _parent;
 	depth[now] = _depth;
 	time_in[now] = timer++;
-	used[now] = true;	
+	used[now] = true;
+
+  // do what is needed
+
 	for (auto to : G[now]) if (!used[to])
 		_centroid_decomposition(to, now, _depth + 1);	
 	time_out[now] = timer - 1;

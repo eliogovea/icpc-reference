@@ -2,8 +2,8 @@
 
 using namespace std;
 
-const int N = 5005;
-const int LN = 15;
+const int N = 500 * 1000 + 10;
+const int LN = 20;
 const int INF = 1e9;
 
 string s;
@@ -16,6 +16,7 @@ int lg[N];
 
 void build() {
 	for (int i = 1; i <= n; i++) {
+    lg[i] = i == 1 ? 0 : lg[i >> 1] + 1;
 		maxST[0][i] = sum[i];
 		minST[0][i] = sum[i];
 	}

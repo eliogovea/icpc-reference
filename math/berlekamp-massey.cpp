@@ -24,7 +24,7 @@ struct BerlekampMassey {
   inline vector<int> shift(vector <int> & P, int d) {
     vector <int> Q(d + (int)P.size());
     for (int i = 0; i < (int)P.size(); i++)
-    Q[i + d] = P[i];
+      Q[i + d] = P[i];
     return Q;
   }
   int calc(vector<int>& P, vector<int>& d, int pos){

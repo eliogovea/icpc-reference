@@ -2,7 +2,7 @@
  
 using namespace std;
  
-// HLD + Euler Tour Trick (overkill, HLD only, is good enough)
+// HLD + Euler Tour Trick
 const int N = 100 * 1000 + 10;
 int n; vector<int> g[N];
 int size[N], depth[N], par[N];
