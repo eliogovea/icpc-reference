@@ -9,7 +9,8 @@
 template <typename T>
 constexpr std::int32_t sign(T x) {
     if constexpr (std::is_floating_point<T>::value) {
-        static constexpr double epsilon = 1e-9;  // TODO change epsilon depending on the problem
+        static constexpr double epsilon =
+            1e-9;  // TODO change epsilon depending on the problem
         return x < -epsilon ? -1 : (epsilon < x);
     }
     return x < T{0} ? -1 : (T{0} < x);
