@@ -12,9 +12,7 @@ using namespace std;
 void solve(vector<int> v) {
     int n = v.size();
     vector<int> sv(n + 1);
-    for (int i = 1; i <= n; i++) {
-        sv[i] = sv[i - 1] + v[i - 1];
-    }
+    for (int i = 1; i <= n; i++) { sv[i] = sv[i - 1] + v[i - 1]; }
     auto c = [&](int l, int r, int m) {
         assert(l <= m && m < r);
         return sv[r] - sv[l] - v[m];

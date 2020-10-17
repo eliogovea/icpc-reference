@@ -14,9 +14,7 @@ inline int sign(const LL x) { return (x < 0) ? -1 : (x > 0); }
 inline int sign(const double x) { return x < -EPS ? -1 : x > EPS; }
 
 inline bool is_in(double a, double b, double x) {
-    if (a > b) {
-        swap(a, b);
-    }
+    if (a > b) { swap(a, b); }
     return (a - EPS <= x && x <= b + EPS);
 }
 
@@ -26,9 +24,7 @@ struct point {
 };
 
 bool operator<(const point& P, const point& Q) {
-    if (sign(P.y - Q.y) != 0) {
-        return P.y < Q.y;
-    }
+    if (sign(P.y - Q.y) != 0) { return P.y < Q.y; }
     return (sign(P.x - Q.x) == -1);
 }
 
@@ -68,9 +64,7 @@ point operator/(const point& P, const double k) {
 }
 
 inline int half_plane(const point& P) {
-    if (sign(P.y) != 0) {
-        return sign(P.y);
-    }
+    if (sign(P.y) != 0) { return sign(P.y); }
     return sign(P.x);
 }
 
@@ -96,9 +90,7 @@ inline double dist(const point& P, const point& Q) {
 
 /// returns true if P belongs in segment AB
 inline bool is_in(point A, point B, point P) {
-    if (sign(cross(B - A, P - A)) != 0) {
-        return false;
-    }
+    if (sign(cross(B - A, P - A)) != 0) { return false; }
     return (is_in(A.x, B.x, P.x) && is_in(A.y, B.y, P.y));
 }
 
@@ -115,9 +107,7 @@ void normalize(point& P) {  // for vectors
     assert(sign(P.x) != 0 || sign(P.y) != 0);
     // LL g = __gcd(abs(P.x), abs(P.y));
     // P.x /= g; P.y /= g;
-    if (P.x < 0 || (P.x == 0 && P.y < 0)) {
-        P.x = -P.x, P.y = -P.y;
-    }
+    if (P.x < 0 || (P.x == 0 && P.y < 0)) { P.x = -P.x, P.y = -P.y; }
 }
 
 struct compare_angle {
@@ -128,9 +118,7 @@ struct compare_angle {
             return half_plane(P - O) < half_plane(Q - O);
         }
         int c = sign(cross(P - O, Q - O));
-        if (c != 0) {
-            return (c > 0);
-        }
+        if (c != 0) { return (c > 0); }
         return dist2(P, O) < dist2(Q, O);
     }
 };
@@ -138,9 +126,7 @@ struct compare_angle {
 inline double signed_area_2(const vector<point>& G) {
     double res = 0;
     int n = G.size();
-    for (int i = 0; i < n; i++) {
-        res += cross(G[i], G[(i + 1) % n]);
-    }
+    for (int i = 0; i < n; i++) { res += cross(G[i], G[(i + 1) % n]); }
     return res;
 }
 
@@ -154,18 +140,14 @@ inline bool is_convex(const vector<point>& G) {
     for (int i = 0; i < n; i++) {
         int j = (i + 1) % n;
         int k = (i + 2) % n;
-        if (sign(cross(G[j] - G[i], G[k] - G[i])) < 0) {
-            return false;
-        }
+        if (sign(cross(G[j] - G[i], G[k] - G[i])) < 0) { return false; }
     }
     return true;
 }
 
 void normalize_convex(vector<point>& G) {
     G.erase(unique(G.begin(), G.end()), G.end());
-    while (G.size() > 1 && G[0] == G.back()) {
-        G.pop_back();
-    }
+    while (G.size() > 1 && G[0] == G.back()) { G.pop_back(); }
     rotate(G.begin(), min_element(G.begin(), G.end()), G.end());
     int ptr = 1;
     for (int i = 1; i < G.size(); i++) {
@@ -180,18 +162,10 @@ int inside_polygon(point P, const vector<point>& G) {
     int n = G.size(), cnt = 0;
     for (int i = 0; i < n; i++) {
         point A = G[i], B = G[(i + 1) == n ? 0 : i + 1];
-        if (is_in(P, A, B)) {
-            return ON;
-        }
-        if (B.y < A.y) {
-            swap(A, B);
-        }
-        if (P.y < A.y || B.y <= P.y || A.y == B.y) {
-            continue;
-        }
-        if (sign(cross(B - A, P - A)) > 0) {
-            cnt++;
-        }
+        if (is_in(P, A, B)) { return ON; }
+        if (B.y < A.y) { swap(A, B); }
+        if (P.y < A.y || B.y <= P.y || A.y == B.y) { continue; }
+        if (sign(cross(B - A, P - A)) > 0) { cnt++; }
     }
     return ((cnt & 1) ? IN : OUT);
 }
@@ -200,12 +174,8 @@ int inside_polygon(point P, const vector<point>& G) {
 int inside_convex(point P, const vector<point>& G) {
     int n = G.size();
     assert(n >= 3);
-    if (sign(cross(P - G[0], G[1] - G[0])) > 0) {
-        return OUT;
-    }
-    if (sign(cross(G[n - 1] - G[0], P - G[0])) > 0) {
-        return OUT;
-    }
+    if (sign(cross(P - G[0], G[1] - G[0])) > 0) { return OUT; }
+    if (sign(cross(G[n - 1] - G[0], P - G[0])) > 0) { return OUT; }
     if (sign(cross(P - G[0], G[1] - G[0])) == 0) {
         return (is_in(P, G[0], G[1]) ? ON : OUT);
     }
@@ -222,16 +192,12 @@ int inside_convex(point P, const vector<point>& G) {
         }
     }
     int s = sign(cross(G[pos] - G[pos - 1], P - G[pos - 1]));
-    if (s == 0) {
-        return ON;
-    }
+    if (s == 0) { return ON; }
     return ((s > 0) ? IN : OUT);
 }
 
 vector<point> convex_hull(vector<point> pts) {
-    if (pts.size() <= 2) {
-        return pts;
-    }
+    if (pts.size() <= 2) { return pts; }
     sort(pts.begin(), pts.end());
     int n = pts.size(), t = 0;
     vector<point> ch(2 * n);
@@ -266,9 +232,7 @@ int count_commont_tangents(point C1, LL r1, point C2, LL r2) {
 
 inline int get_upper_point(const vector<point>& G) {
     int n = G.size(), upper = 0;
-    while (upper + 1 < n && G[upper] < G[upper + 1]) {
-        upper++;
-    }
+    while (upper + 1 < n && G[upper] < G[upper + 1]) { upper++; }
     return upper;
 }
 
@@ -281,9 +245,7 @@ bool convex_to_segment_intersection(vector<point>& G, int upper, point A,
         return true;
     }
     int n = G.size();
-    if (B < A) {
-        swap(A, B);
-    }
+    if (B < A) { swap(A, B); }
     if (cross(B - A, G[0] - A) > 0) {
         int lo = 1, hi = upper, id = 0;
         while (lo <= hi) {
@@ -356,12 +318,8 @@ LL convex_diameter_2(vector<point>& G) {
     int n = G.size(), p0 = 0, p1 = 0;
     for (int i = 1; i < n; i++) {
         // < compare y first then x
-        if (G[i] < G[p0]) {
-            p0 = i;
-        }
-        if (G[p1] < G[i]) {
-            p1 = i;
-        }
+        if (G[i] < G[p0]) { p0 = i; }
+        if (G[p1] < G[i]) { p1 = i; }
     }
     LL res = dist2(G[p0], G[p1]);
     int c0 = p0, c1 = p1;
@@ -395,12 +353,8 @@ double point_to_line(point P, point A, point B) {
 }
 
 double point_to_segment(point P, point A, point B) {
-    if (sign(dot(P - A, B - A)) <= 0) {
-        return dist(P, A);
-    }
-    if (sign(dot(P - B, A - B)) <= 0) {
-        return dist(P, B);
-    }
+    if (sign(dot(P - A, B - A)) <= 0) { return dist(P, A); }
+    if (sign(dot(P - B, A - B)) <= 0) { return dist(P, B); }
     return point_to_line(P, A, B);
 }
 
@@ -459,21 +413,21 @@ vector<pair<point, point>> common_tangents(point C1, double r1, point C2,
     {
         auto t = point_circle_tangent(C2, C1, r1 - r2);
         auto V_first =
-            rotate_point((t.first - C2) * (r2 / dist(t.first, C2)), 0.5 * PI);
-        point V_second = rotate_point(
-            (t.second - C2) * (r2 / dist(t.second, C2)), -0.5 * PI);
+          rotate_point((t.first - C2) * (r2 / dist(t.first, C2)), 0.5 * PI);
+        point V_second =
+          rotate_point((t.second - C2) * (r2 / dist(t.second, C2)), -0.5 * PI);
         answer.push_back(make_pair(C2 + V_first, t.first + V_first));
         answer.push_back(make_pair(C2 + V_second, t.second + V_second));
     }
     if (abs(d - r1 - r2) <= EPS) {
         answer.push_back(
-            make_pair(C1 + (C2 - C1) * (r1 / d), C1 + (C2 - C1) * (r1 / d)));
+          make_pair(C1 + (C2 - C1) * (r1 / d), C1 + (C2 - C1) * (r1 / d)));
     } else if (d > r1 + r2 + EPS) {
         auto t = point_circle_tangent(C2, C1, r1 + r2);
         point V_first =
-            rotate_point((t.first - C2) * (r2 / dist(t.first, C2)), -0.5 * PI);
+          rotate_point((t.first - C2) * (r2 / dist(t.first, C2)), -0.5 * PI);
         point V_second =
-            rotate_point((t.second - C2) * (r2 / dist(t.second, C2)), 0.5 * PI);
+          rotate_point((t.second - C2) * (r2 / dist(t.second, C2)), 0.5 * PI);
         answer.push_back(make_pair(C2 + V_first, t.first + V_first));
         answer.push_back(make_pair(C2 + V_second, t.second + V_second));
     }  // TODO avoid rotate(P, 0.5 PI), use rotate_90_ccw

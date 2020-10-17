@@ -20,9 +20,7 @@ point_LL operator-(const point_LL &P, const point_LL &Q) {
 }
 
 bool operator<(const point_LL &P, const point_LL &Q) {
-    if (P.x != Q.x) {
-        return P.x < Q.x;
-    }
+    if (P.x != Q.x) { return P.x < Q.x; }
     return P.y < Q.y;
 }
 
@@ -64,41 +62,27 @@ inline point_LD intersect_LD(point_LD A, point_LD B, point_LD C, point_LD D) {
 
 vector<point_LD> intersect_LL(point_LL A, point_LL B, point_LL C, point_LL D) {
     if (A == B && C == D) {
-        if (A == C) {
-            return vector<point_LD>(1, get(A));
-        }
+        if (A == C) { return vector<point_LD>(1, get(A)); }
         return vector<point_LD>();
     }
     if (A == B) {
-        if (inside(A, C, D)) {
-            return vector<point_LD>(1, get(A));
-        }
+        if (inside(A, C, D)) { return vector<point_LD>(1, get(A)); }
         return vector<point_LD>();
     }
     if (C == D) {
-        if (inside(C, A, B)) {
-            return vector<point_LD>(1, get(C));
-        }
+        if (inside(C, A, B)) { return vector<point_LD>(1, get(C)); }
         return vector<point_LD>();
     }
     if (sign(cross_LL(B - A, D - C)) == 0) {
         if (sign(cross_LL(B - A, C - A)) == 0) {
-            if (B < A) {
-                swap(A, B);
-            }
-            if (D < C) {
-                swap(C, D);
-            }
+            if (B < A) { swap(A, B); }
+            if (D < C) { swap(C, D); }
             if (C < A) {
                 swap(A, C);
                 swap(B, D);
             }
-            if (B < C) {
-                return vector<point_LD>();
-            }
-            if (B == C) {
-                return vector<point_LD>(1, get(B));
-            }
+            if (B < C) { return vector<point_LD>(); }
+            if (B == C) { return vector<point_LD>(1, get(B)); }
             vector<point_LD> res(1, get(C));
             if (D < B) {
                 res.push_back(get(D));
@@ -136,9 +120,7 @@ int main() {
         } else {
             for (int i = 0; i < pts.size(); i++) {
                 cout << fixed << pts[i].x << " " << fixed << pts[i].y;
-                if (i + 1 < pts.size()) {
-                    cout << " ";
-                }
+                if (i + 1 < pts.size()) { cout << " "; }
             }
             cout << "\n";
         }

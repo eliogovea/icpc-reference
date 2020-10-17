@@ -33,7 +33,7 @@ long long largestRectangle(vector<int> h) {
     long long answer = 0;
     for (int i = 0; i < n; i++) {
         answer = max(answer, (long long)h[i] *
-                                 (long long)(to_right[i] - to_left[i] - 1LL));
+                               (long long)(to_right[i] - to_left[i] - 1LL));
     }
     return answer;
 }
@@ -42,9 +42,7 @@ int main() {
     int n;
     cin >> n;
     vector<int> h(n);
-    for (int h_i = 0; h_i < n; h_i++) {
-        cin >> h[h_i];
-    }
+    for (int h_i = 0; h_i < n; h_i++) { cin >> h[h_i]; }
     long result = largestRectangle(h);
     cout << result << endl;
     return 0;

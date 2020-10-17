@@ -28,9 +28,7 @@ struct treap_node {
         right_child = nullptr;
 
         size = 1;
-        for (int c = 0; c < ALPHABET; c++) {
-            cnt[c] = 0;
-        }
+        for (int c = 0; c < ALPHABET; c++) { cnt[c] = 0; }
         cnt[value] = 1;
 
         lazy_reverse = 0;
@@ -52,9 +50,7 @@ inline void add_lazy_set(treap_node* now, int c) {
 }
 
 inline void add_lazy_reverse(treap_node* now) {
-    if (now != nullptr && now->lazy_set == -1) {
-        now->lazy_reverse ^= 1;
-    }
+    if (now != nullptr && now->lazy_set == -1) { now->lazy_reverse ^= 1; }
 }
 
 inline void push_lazy(treap_node* now) {
@@ -67,9 +63,7 @@ inline void push_lazy(treap_node* now) {
         }
         if (now->lazy_set != -1) {
             now->value = now->lazy_set;
-            for (int c = 0; c < ALPHABET; c++) {
-                now->cnt[c] = 0;
-            }
+            for (int c = 0; c < ALPHABET; c++) { now->cnt[c] = 0; }
             now->cnt[now->value] = now->size;
             add_lazy_set(now->left_child, now->lazy_set);
             add_lazy_set(now->right_child, now->lazy_set);
@@ -84,7 +78,7 @@ void update_treap_node(treap_node* now) {
         now->size = 1 + get_size(now->left_child) + get_size(now->right_child);
         for (int c = 0; c < ALPHABET; c++) {
             now->cnt[c] =
-                get_cnt(now->left_child, c) + get_cnt(now->right_child, c);
+              get_cnt(now->left_child, c) + get_cnt(now->right_child, c);
         }
         now->cnt[now->value]++;
     }
@@ -135,9 +129,7 @@ void split(treap_node* root, int where, treap_node*& left, treap_node*& right) {
 }
 
 void print_treap(treap_node* now, ostream& out) {
-    if (now == nullptr) {
-        return;
-    }
+    if (now == nullptr) { return; }
     push_lazy(now);
     print_treap(now->left_child, out);
     out << char('a' + now->value);

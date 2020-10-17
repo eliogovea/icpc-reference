@@ -5,18 +5,14 @@
 template <typename T>
 void normalize_convex(const std::vector<point<T>>& G) {
     G.erase(std::unique(G.begin(), G.end()), G.end());
-    while (G.size() > 1 && G[0] == G.back()) {
-        G.pop_back();
-    }
+    while (G.size() > 1 && G[0] == G.back()) { G.pop_back(); }
     auto c = std::min_element(G.begin(), G.end());
     std::rotate(G.begin(), c, G.end());
     std::size_t size = 1;
     for (std::size_t i = 1; i < G.size(); i++) {
         const auto& P = G[i - 1];
         const auto& Q = G[i + 1 == G.size() ? 0 : i + 1];
-        if (!G[i].inside_segment(P, Q)) {
-            G[size++] = G[i];
-        }
+        if (!G[i].inside_segment(P, Q)) { G[size++] = G[i]; }
     }
     G.resize(size);
 }
@@ -36,7 +32,7 @@ std::vector<point<T>> convex_hull(std::vector<point<T>> pts) {
             while (size > prev_size &&
                    sign(point<T>::cross(pts[i] - hull[size - 2],
                                         hull[size - 1] - hull[size - 2])) <=
-                       0) {
+                     0) {
                 size--;
             }
             hull[size++] = pts[i];
@@ -44,29 +40,31 @@ std::vector<point<T>> convex_hull(std::vector<point<T>> pts) {
         std::reverse(pts.begin(), pts.end());
     }
 
-    if (size > 1 && hull[0] == hull[size - 1]) {
-        size--;
-    }
+    if (size > 1 && hull[0] == hull[size - 1]) { size--; }
 
     hull.resize(size);
 
     return hull;
 }
 
+enum class relative_position : std::int32_t { in = -1, on = 0, out = 1 };
+
 // -1 inside, 0 on a side, +1 outisde
 template <typename T>
 std::int32_t inside_convex(point<T> P, const std::vector<point<T>>& G) {
     if (sign(point<T>::cross(P - G[0], G[1] - G[0])) > 0) {
-        return +1;
+        return relative_position::out;
     }
     if (sign(point<T>::cross(G[n - 1] - G[0], P - G[0])) > 0) {
-        return +1;
+        return relative_position::out;
     }
     if (sign(point<T>::cross(P - G[0], G[1] - G[0])) == 0) {
-        return P.inside_segment(G[0], G[1]) ? 0 : +1;
+        return P.inside_segment(G[0], G[1]) ? relative_position::on
+                                            : relative_position::out;
     }
     if (sign(point<T>::cross(G[n - 1] - G[0], P - G[0])) == 0) {
-        return P.inside_segment(G[0], G[n - 1]) ? 0 : +1;
+        return P.inside_segment(G[0], G[n - 1]) ? relative_position::on
+                                                : relative_position::out;
     }
     std::size_t lo = 2;
     std::size_t hi = G.size() - 1;
@@ -88,9 +86,7 @@ std::vector<point<T>> minkowsky_sum(std::vector<point<T>> a,
                                     std::vector<point<T>> b) {
     auto na = a.size();
     auto nb = b.size();
-    if (na == 0 || nb == 0) {
-        return {};
-    }
+    if (na == 0 || nb == 0) { return {}; }
     normalize_convex(a);
     normalize_convex(b);
     std::vector<point<T>> s;

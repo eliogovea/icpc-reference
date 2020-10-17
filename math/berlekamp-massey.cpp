@@ -10,9 +10,7 @@ struct BerlekampMassey {
     inline int power(int x, int n) {
         int y = 1 % M;
         while (n) {
-            if (n & 1) {
-                y = (long long)y * x % M;
-            }
+            if (n & 1) { y = (long long)y * x % M; }
             x = (long long)x * x % M;
             n >>= 1;
         }

@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 
-using namespace st;
+using namespace std;
 
 const int N = 100 * 1000 + 10;
 const int Q = 50 * 1000 + 10;

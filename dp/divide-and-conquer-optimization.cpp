@@ -35,7 +35,7 @@ int main() {
     for (int i = 1; i <= n; i++)
         for (int j = 1; j <= n; j++)
             sum[i][j] =
-                u[i][j] + sum[i - 1][j] + sum[i][j - 1] - sum[i - 1][j - 1];
+              u[i][j] + sum[i - 1][j] + sum[i][j - 1] - sum[i - 1][j - 1];
     for (int i = 1; i <= n; i++) dp[1][i] = cost(1, i), pos[1][i] = 0;
     int ans = dp[1][n];
     for (int i = 2; i <= k; i++)

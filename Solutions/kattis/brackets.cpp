@@ -22,9 +22,9 @@ void build() {
     for (int i = 1; (1 << i) <= n; i++) {
         for (int l = 1; l + (1 << i) - 1 <= n; l++) {
             maxST[i][l] =
-                max(maxST[i - 1][l], maxST[i - 1][l + (1 << (i - 1))]);
+              max(maxST[i - 1][l], maxST[i - 1][l + (1 << (i - 1))]);
             minST[i][l] =
-                min(minST[i - 1][l], minST[i - 1][l + (1 << (i - 1))]);
+              min(minST[i - 1][l], minST[i - 1][l + (1 << (i - 1))]);
         }
     }
 }
@@ -49,9 +49,7 @@ int main() {
     n = s.size();
 
     lg[1] = 0;
-    for (int i = 2; i <= n; i++) {
-        lg[i] = lg[i / 2] + 1;
-    }
+    for (int i = 2; i <= n; i++) { lg[i] = lg[i / 2] + 1; }
 
     bool good = true;
     for (int i = 1; i <= n; i++) {
@@ -61,14 +59,10 @@ int main() {
         } else {
             sum[i]--;
         }
-        if (sum[i] < 0) {
-            good = false;
-        }
+        if (sum[i] < 0) { good = false; }
     }
 
-    if (sum[n] != 0) {
-        good = false;
-    }
+    if (sum[n] != 0) { good = false; }
 
     if (good) {
         cout << "possible\n";
@@ -83,25 +77,19 @@ int main() {
             if (l > 1) {
                 int minVal = queryMin(1, l - 1);
                 // cerr << "[1, l) " << minVal << "\n";
-                if (minVal < 0) {
-                    continue;
-                }
+                if (minVal < 0) { continue; }
             }
             /// [l, r]
             {
                 int minVal = 2 * sum[l - 1] - queryMax(l, r);
                 // cerr << "[l, r] " << minVal << "\n";
-                if (minVal < 0) {
-                    continue;
-                }
+                if (minVal < 0) { continue; }
             }
             /// (r, n]
             if (r < n) {
                 int minVal = 2 * (sum[l - 1] - sum[r]) + queryMin(r + 1, n);
                 // cerr << "(r, n] " << minVal << "\n";
-                if (minVal < 0) {
-                    continue;
-                }
+                if (minVal < 0) { continue; }
             }
             /// check sum
             int sumT;
@@ -112,9 +100,7 @@ int main() {
             }
 
             // cerr << "sumT " << sumT << "\n";
-            if (sumT != 0) {
-                continue;
-            }
+            if (sumT != 0) { continue; }
             possible = true;
         }
     }

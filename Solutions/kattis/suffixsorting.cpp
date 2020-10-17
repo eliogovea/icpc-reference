@@ -18,17 +18,11 @@ vector<int> get_suffix_array(const string &s, const int alpha) {
         vector<int> cur_order(n);
         for (int i = 0; i < n; i++) {
             cur_order[i] = suffix_array[i] - half_length;
-            if (cur_order[i] < 0) {
-                cur_order[i] += n;
-            }
+            if (cur_order[i] < 0) { cur_order[i] += n; }
         }
         vector<int> cnt(classes);
-        for (int i = 0; i < n; i++) {
-            cnt[class_id[cur_order[i]]]++;
-        }
-        for (int i = 1; i < classes; i++) {
-            cnt[i] += cnt[i - 1];
-        }
+        for (int i = 0; i < n; i++) { cnt[class_id[cur_order[i]]]++; }
+        for (int i = 1; i < classes; i++) { cnt[i] += cnt[i - 1]; }
         for (int i = n - 1; i >= 0; i--) {
             int p = cur_order[i];
             suffix_array[--cnt[class_id[p]]] = p;
@@ -42,24 +36,16 @@ vector<int> get_suffix_array(const string &s, const int alpha) {
                 classes++;
             } else {
                 int pos1 = suffix_array[i] + half_length;
-                if (pos1 > n) {
-                    pos1 -= n;
-                }
+                if (pos1 > n) { pos1 -= n; }
                 int pos2 = suffix_array[i - 1] + half_length;
-                if (pos2 > n) {
-                    pos2 -= n;
-                }
-                if (class_id[pos1] != class_id[pos2]) {
-                    classes++;
-                }
+                if (pos2 > n) { pos2 -= n; }
+                if (class_id[pos1] != class_id[pos2]) { classes++; }
             }
             new_class_id[suffix_array[i]] = classes - 1;
         }
         class_id = new_class_id;
     }
-    for (int i = 0; i + 1 < n; i++) {
-        suffix_array[i] = suffix_array[i + 1];
-    }
+    for (int i = 0; i + 1 < n; i++) { suffix_array[i] = suffix_array[i + 1]; }
     suffix_array.pop_back();
     return suffix_array;
 }
@@ -89,9 +75,7 @@ int main() {
             int p;
             in >> p;
             cout << suffix_array[p];
-            if (t != 0) {
-                cout << " ";
-            }
+            if (t != 0) { cout << " "; }
         }
         cout << "\n";
     }

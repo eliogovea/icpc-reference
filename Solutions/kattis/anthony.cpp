@@ -10,12 +10,8 @@ double p[2500];
 double dp[1500][1500];
 
 double calc(int a, int b) {
-    if (a == n && b == m) {
-        return 1.0;
-    }
-    if (dp[a][b] > -0.5) {
-        return dp[a][b];
-    }
+    if (a == n && b == m) { return 1.0; }
+    if (dp[a][b] > -0.5) { return dp[a][b]; }
 }
 
 int main() {
@@ -23,9 +19,7 @@ int main() {
     cin.tie(0);
 
     cin >> n >> m;
-    for (int i = 0; i < n + m - 1; i++) {
-        cin >> p[i];
-    }
+    for (int i = 0; i < n + m - 1; i++) { cin >> p[i]; }
 
     dp[0][0] = 1;
     for (int x = 0; x < n; x++) {
@@ -35,9 +29,7 @@ int main() {
         }
     }
     double answer = 0.0;
-    for (int x = 0; x < n; x++) {
-        answer += dp[x][m];
-    }
+    for (int x = 0; x < n; x++) { answer += dp[x][m]; }
     cout.precision(14);
     cout << fixed << answer << "\n";
 }

@@ -20,38 +20,26 @@ int linearRecurrence(vector<int> f, vector<int> t, long long n, const int M) {
             f[i] = 0;
             for (int j = 1; j <= k; j++) {
                 f[i] += (long long)(M - t[j]) * f[i - j] % M;
-                if (f[i] >= M) {
-                    f[i] -= M;
-                }
+                if (f[i] >= M) { f[i] -= M; }
             }
         }
 
         // get the new transitions T(x) <- T(x) * T(-x);
-        for (int i = 0; i <= 2 * k; i++) {
-            nt[i] = 0;
-        }
+        for (int i = 0; i <= 2 * k; i++) { nt[i] = 0; }
 
         for (int i = 0; i <= k; i++) {
             for (int j = 0; j <= k; j++) {
                 int v = (long long)t[i] * t[j] % M;
-                if (j & 1) {
-                    v = M - v;
-                }
+                if (j & 1) { v = M - v; }
                 nt[i + j] += v;
-                if (nt[i + j] >= M) {
-                    nt[i + j] -= M;
-                }
+                if (nt[i + j] >= M) { nt[i + j] -= M; }
             }
         }
 
-        for (int i = 0; i <= k; i++) {
-            t[i] = nt[i << 1];
-        }
+        for (int i = 0; i <= k; i++) { t[i] = nt[i << 1]; }
 
         // update f depending on the parity of n
-        for (int i = 0, o = (n & 1); i < k; i++) {
-            f[i] = f[2 * i + o];
-        }
+        for (int i = 0, o = (n & 1); i < k; i++) { f[i] = f[2 * i + o]; }
 
         n >>= 1;
     }
@@ -72,16 +60,12 @@ void spoj_seq() {
 
         vector<int> f(k), t(k + 1);
 
-        for (int i = 0; i < k; i++) {
-            cin >> f[i];
-        }
+        for (int i = 0; i < k; i++) { cin >> f[i]; }
 
         t[0] = 1;
         for (int i = 1; i <= k; i++) {
             cin >> t[i];
-            if (t[i] != 0) {
-                t[i] = M - t[i];
-            }
+            if (t[i] != 0) { t[i] = M - t[i]; }
         }
 
         int n;

@@ -7,12 +7,8 @@ using namespace std;
 typedef long long LL;
 
 inline int sign(const LL x) {
-    if (x < 0) {
-        return -1;
-    }
-    if (x > 0) {
-        return 1;
-    }
+    if (x < 0) { return -1; }
+    if (x > 0) { return 1; }
     return 0;
 }
 
@@ -23,9 +19,7 @@ struct point {
 };
 
 bool operator<(const point &P, const point &Q) {
-    if (P.y != Q.y) {
-        return P.y < Q.y;
-    }
+    if (P.y != Q.y) { return P.y < Q.y; }
     return P.x < Q.x;
 }
 
@@ -33,9 +27,7 @@ bool operator==(const point &P, const point &Q) { return !(P < Q) && !(Q < P); }
 
 struct compare_x {
     bool operator()(const point &P, const point &Q) {
-        if (P.x != Q.x) {
-            return P.x < Q.x;
-        }
+        if (P.x != Q.x) { return P.x < Q.x; }
         return P.y < Q.y;
     }
 };
@@ -52,9 +44,7 @@ void normalize(point &P) {
 }
 
 inline int half_plane(const point &P) {
-    if (P.y != 0) {
-        return sign(P.y);
-    }
+    if (P.y != 0) { return sign(P.y); }
     return sign(P.x);
 }
 
@@ -94,9 +84,7 @@ struct compare_angle {
             return half_plane(P - O) < half_plane(Q - O);
         }
         int c = sign(cross(P - O, Q - O));
-        if (c != 0) {
-            return (c > 0);
-        }
+        if (c != 0) { return (c > 0); }
         return dist2(P, O) < dist2(Q, O);
     }
 };
@@ -106,16 +94,12 @@ inline point rotate_ccw_90(const point &P) { return point(-P.y, P.x); }
 inline point rotate_cw_90(const point &P) { return point(P.y, -P.x); }
 
 inline bool is_in(LL x, LL a, LL b) {
-    if (a > b) {
-        swap(a, b);
-    }
+    if (a > b) { swap(a, b); }
     return (a <= x && x <= b);
 }
 
 inline bool is_in(const point &P, const point &A, const point &B) {
-    if (cross(B - A, P - A) != 0) {
-        return false;
-    }
+    if (cross(B - A, P - A) != 0) { return false; }
     return (is_in(P.x, A.x, B.x) && is_in(P.y, A.y, B.y));
 }
 
@@ -173,22 +157,12 @@ inline int point_inside_polygon(const point &P, const vector<point> &polygon) {
     for (int i = 0; i < n; i++) {
         point A = polygon[i];
         point B = polygon[(i + 1) % n];
-        if (is_in(P, A, B)) {
-            return ON;
-        }
-        if (B.y < A.y) {
-            swap(A, B);
-        }
-        if (P.y < A.y || B.y <= P.y || A.y == B.y) {
-            continue;
-        }
-        if (sign(cross(B - A, P - A)) > 0) {
-            cnt++;
-        }
+        if (is_in(P, A, B)) { return ON; }
+        if (B.y < A.y) { swap(A, B); }
+        if (P.y < A.y || B.y <= P.y || A.y == B.y) { continue; }
+        if (sign(cross(B - A, P - A)) > 0) { cnt++; }
     }
-    if (cnt & 1) {
-        return IN;
-    }
+    if (cnt & 1) { return IN; }
     return OUT;
 }
 
@@ -198,9 +172,7 @@ inline int point_inside_polygon(const point &P, const vector<point> &polygon) {
 vector<point> convex_hull_graham_scan(vector<point> pts) {
     sort(pts.begin(), pts.end());
     int n = pts.size();
-    if (n <= 2) {
-        return pts;
-    }
+    if (n <= 2) { return pts; }
     sort(++pts.begin(), pts.end(), compare_angle(pts[0]));
     vector<point> ch(n);
     int top = 0;
@@ -218,9 +190,7 @@ vector<point> convex_hull_graham_scan(vector<point> pts) {
 /// O(n * log(n)) -> n size of pts
 /// test ok
 vector<point> convex_hull_monotone_chain(vector<point> pts) {
-    if (pts.size() <= 2) {
-        return pts;
-    }
+    if (pts.size() <= 2) { return pts; }
     sort(pts.begin(), pts.end());
     int n = pts.size();
     vector<point> ch(2 * n);
@@ -240,9 +210,7 @@ vector<point> convex_hull_monotone_chain(vector<point> pts) {
         }
         ch[top++] = pts[i];
     }
-    if (ch[0] == ch[top - 1]) {
-        top--;
-    }
+    if (ch[0] == ch[top - 1]) { top--; }
     ch.resize(top);
     return ch;
 }
@@ -254,18 +222,10 @@ int count_commont_tangents(point C1, LL r1, point C2, LL r2) {
     // swap(C1, C2);
     // swap(r1, r2);
     // }
-    if (d2 > (r1 + r2) * (r1 + r2)) {
-        return 4;
-    }
-    if (d2 == (r1 + r2) * (r1 + r2)) {
-        return 3;
-    }
-    if (d2 < (r1 - r2) * (r1 - r2)) {
-        return 0;
-    }
-    if (d2 == (r1 - r2) * (r1 - r2)) {
-        return 1;
-    }
+    if (d2 > (r1 + r2) * (r1 + r2)) { return 4; }
+    if (d2 == (r1 + r2) * (r1 + r2)) { return 3; }
+    if (d2 < (r1 - r2) * (r1 - r2)) { return 0; }
+    if (d2 == (r1 - r2) * (r1 - r2)) { return 1; }
     return 2;
 }
 
@@ -295,12 +255,8 @@ void normalize_convex(vector<point> &polygon) {
 inline int inside_convex(const point &P, const vector<point> &polygon) {
     int n = polygon.size();
     assert(n >= 3);
-    if (cross(P - polygon[0], polygon[1] - polygon[0]) > 0) {
-        return OUT;
-    }
-    if (cross(polygon[n - 1] - polygon[0], P - polygon[0]) > 0) {
-        return OUT;
-    }
+    if (cross(P - polygon[0], polygon[1] - polygon[0]) > 0) { return OUT; }
+    if (cross(polygon[n - 1] - polygon[0], P - polygon[0]) > 0) { return OUT; }
     if (cross(P - polygon[0], polygon[1] - polygon[0]) == 0) {
         return (is_in(P, polygon[0], polygon[1]) ? ON : OUT);
     }
@@ -320,18 +276,14 @@ inline int inside_convex(const point &P, const vector<point> &polygon) {
         }
     }
     int s = sign(cross(polygon[pos] - polygon[pos - 1], P - polygon[pos - 1]));
-    if (s == 0) {
-        return ON;
-    }
+    if (s == 0) { return ON; }
     return ((s > 0) ? IN : OUT);
 }
 
 inline int get_upper_point(const vector<point> &polygon) {
     int n = polygon.size();
     int upper = 0;
-    while (upper + 1 < n && polygon[upper] < polygon[upper + 1]) {
-        upper++;
-    }
+    while (upper + 1 < n && polygon[upper] < polygon[upper + 1]) { upper++; }
     return upper;
 }
 
@@ -341,13 +293,11 @@ inline int get_upper_point(const vector<point> &polygon) {
 bool convex_to_segment_intersection(const vector<point> &polygon,
                                     int upper_point, point A, point B) {
     if (sign(cross(polygon[0] - A, B - A)) *
-            sign(cross(polygon[upper_point] - A, B - A)) <=
+          sign(cross(polygon[upper_point] - A, B - A)) <=
         0) {
         return true;
     }
-    if (B < A) {
-        swap(A, B);
-    }
+    if (B < A) { swap(A, B); }
     if (cross(B - A, polygon[0] - A) > 0) {
         int lo = 1;
         int hi = upper_point;
@@ -432,9 +382,7 @@ bool convex_to_segment_intersection(const vector<point> &polygon,
 /// !!! revisar si esta bien escrito
 /// TODO: test
 vector<point> minkowsky_sum(vector<point> a, vector<point> b) {
-    if (!a.size() || !b.size()) {
-        return vector<point>();
-    }
+    if (!a.size() || !b.size()) { return vector<point>(); }
     normalize_convex(a);
     normalize_convex(b);
     vector<point> s;
@@ -481,12 +429,8 @@ LL convex_diameter_2(vector<point> &polygon) {
     int p1 = 0;
     for (int i = 1; i < n; i++) {
         // < compare y first then x
-        if (polygon[i] < polygon[p0]) {
-            p0 = i;
-        }
-        if (polygon[p1] < polygon[i]) {
-            p1 = i;
-        }
+        if (polygon[i] < polygon[p0]) { p0 = i; }
+        if (polygon[p1] < polygon[i]) { p1 = i; }
     }
     LL res = dist2(polygon[p0], polygon[p1]);
     int c0 = p0;
@@ -514,12 +458,8 @@ double convex_width(vector<point> &polygon) {
     int p1 = 0;
     for (int i = 1; i < n; i++) {
         // < compare y first then x
-        if (polygon[i] < polygon[p0]) {
-            p0 = i;
-        }
-        if (polygon[p1] < polygon[i]) {
-            p1 = i;
-        }
+        if (polygon[i] < polygon[p0]) { p0 = i; }
+        if (polygon[p1] < polygon[i]) { p1 = i; }
     }
     LL res = dist2(polygon[p0], polygon[p1]);
     int c0 = p0;
@@ -559,9 +499,7 @@ void test_is_convex() {
     int n;
     cin >> n;
     vector<point> polygon(n);
-    for (int i = 0; i < n; i++) {
-        cin >> polygon[i].x >> polygon[i].y;
-    }
+    for (int i = 0; i < n; i++) { cin >> polygon[i].x >> polygon[i].y; }
     cout << (is_convex(polygon) ? "1" : "0") << "\n";
 }
 
@@ -571,9 +509,7 @@ void test_point_inside_polygon() {
     int n;
     cin >> n;
     vector<point> polygon(n);
-    for (int i = 0; i < n; i++) {
-        cin >> polygon[i].x >> polygon[i].y;
-    }
+    for (int i = 0; i < n; i++) { cin >> polygon[i].x >> polygon[i].y; }
     int q;
     cin >> q;
     while (q--) {
@@ -607,9 +543,7 @@ void test_convex_hull() {
     int n;
     cin >> n;
     vector<point> pts(n);
-    for (int i = 0; i < n; i++) {
-        cin >> pts[i].x >> pts[i].y;
-    }
+    for (int i = 0; i < n; i++) { cin >> pts[i].x >> pts[i].y; }
     vector<point> answer = convex_hull_monotone_chain(pts);
     cout << answer.size() << "\n";
     for (int i = 0; i < answer.size(); i++) {
@@ -622,13 +556,9 @@ void test_convex_hull() {
 void test_convex_hull_1() {
     int n;
     while (cin >> n) {
-        if (n == 0) {
-            break;
-        }
+        if (n == 0) { break; }
         vector<point> pts(n);
-        for (int i = 0; i < pts.size(); i++) {
-            cin >> pts[i].x >> pts[i].y;
-        }
+        for (int i = 0; i < pts.size(); i++) { cin >> pts[i].x >> pts[i].y; }
         sort(pts.begin(), pts.end());
         pts.erase(unique(pts.begin(), pts.end()), pts.end());
         pts = convex_hull_monotone_chain(pts);
@@ -644,13 +574,9 @@ void test_convex_hull_1() {
 void test_convex_hull_2() {
     int n;
     while (cin >> n) {
-        if (n == 0) {
-            break;
-        }
+        if (n == 0) { break; }
         vector<point> pts(n);
-        for (int i = 0; i < pts.size(); i++) {
-            cin >> pts[i].x >> pts[i].y;
-        }
+        for (int i = 0; i < pts.size(); i++) { cin >> pts[i].x >> pts[i].y; }
         sort(pts.begin(), pts.end());
         pts.erase(unique(pts.begin(), pts.end()), pts.end());
         pts = convex_hull_graham_scan(pts);
@@ -702,17 +628,13 @@ void test_inside_convex() {
     int na;
     cin >> na;
     vector<point> a(na);
-    for (int i = 0; i < na; i++) {
-        cin >> a[i].x >> a[i].y;
-    }
+    for (int i = 0; i < na; i++) { cin >> a[i].x >> a[i].y; }
     reverse(a.begin(), a.end());  // points are in cw
     normalize_convex(a);
     int nb;
     cin >> nb;
     vector<point> b(nb);
-    for (int i = 0; i < nb; i++) {
-        cin >> b[i].x >> b[i].y;
-    }
+    for (int i = 0; i < nb; i++) { cin >> b[i].x >> b[i].y; }
     bool ok = true;
     for (int i = 0; i < nb; i++) {
         if (inside_convex(b[i], a) != IN) {
@@ -727,17 +649,11 @@ void test_inside_convex() {
 void test_signed_area_2() {
     int n;
     while (cin >> n) {
-        if (n == 0) {
-            break;
-        }
+        if (n == 0) { break; }
         vector<point> pts(n);
-        for (int i = 0; i < n; i++) {
-            cin >> pts[i].x >> pts[i].y;
-        }
+        for (int i = 0; i < n; i++) { cin >> pts[i].x >> pts[i].y; }
         rotate(pts.begin(), min_element(pts.begin(), pts.end()), pts.end());
-        for (int i = 1; i < pts.size(); i++) {
-            pts[i] = pts[i] - pts[0];
-        }
+        for (int i = 1; i < pts.size(); i++) { pts[i] = pts[i] - pts[0]; }
         pts[0] = point(0, 0);
         LL answer = signed_area_2(pts);
         cout << (answer < 0 ? "CW" : "CCW") << " ";

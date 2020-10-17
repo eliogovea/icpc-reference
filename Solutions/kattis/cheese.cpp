@@ -32,12 +32,8 @@ int main() {
             double mid = (lo + hi) * 0.5;
             double vol = 100.0 * 100.0 * (mid - curz);
             for (int j = 0; j < n; j++) {
-                if (z[j] - r[j] > mid + EPS) {
-                    continue;
-                }
-                if (z[j] + r[j] + EPS < curz) {
-                    continue;
-                }
+                if (z[j] - r[j] > mid + EPS) { continue; }
+                if (z[j] + r[j] + EPS < curz) { continue; }
                 double z0 = max(curz, z[j] - r[j]) - z[j];
                 double z1 = min(mid, z[j] + r[j]) - z[j];
                 vol -= M_PI * (r[j] * r[j] * (z1 - z0) -

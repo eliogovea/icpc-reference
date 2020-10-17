@@ -54,9 +54,7 @@ int lca(int u, int v) {
 
 void test_hld() {
     cin >> n;
-    for (int i = 0; i < n; i++) {
-        g[i].clear();
-    }
+    for (int i = 0; i < n; i++) { g[i].clear(); }
     for (int i = 0; i < n; i++) {
         int c;
         cin >> c;

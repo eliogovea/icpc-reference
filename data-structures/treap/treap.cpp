@@ -23,18 +23,14 @@ template <class T>
 void update_sub_tree_size(treap_node<T> *now) {
     if (now != nullptr) {
         now->sub_tree_size =
-            1 + get_sub_tree_size(now->left) + get_sub_tree_size(now->right);
+          1 + get_sub_tree_size(now->left) + get_sub_tree_size(now->right);
     }
 }
 
 template <class T>
 treap_node<T> *merge(treap_node<T> *left, treap_node<T> *right) {
-    if (left == nullptr) {
-        return right;
-    }
-    if (right == nullptr) {
-        return left;
-    }
+    if (left == nullptr) { return right; }
+    if (right == nullptr) { return left; }
     if (left->priority > right->priority) {
         left->right = merge(left->right, right);
         update_sub_tree_size(left);
@@ -47,12 +43,10 @@ treap_node<T> *merge(treap_node<T> *left, treap_node<T> *right) {
 
 template <class T>
 pair<treap_node<T> *, treap_node<T> *> split(treap_node<T> *tree, T key) {
-    if (tree == nullptr) {
-        return make_pair(nullptr, nullptr);
-    }
+    if (tree == nullptr) { return make_pair(nullptr, nullptr); }
     if (tree->key <= key) {
         pair<treap_node<T> *, treap_node<T> *> right_split =
-            split(tree->right, key);
+          split(tree->right, key);
         tree->right = right_split.first;
         update_sub_tree_size(tree);
         return make_pair(tree, right_split.second);
@@ -82,12 +76,8 @@ struct treap {
     treap_node<T> *find(T key) {
         treap_node<T> *now = root;
         while (true) {
-            if (now == nullptr) {
-                return nullptr;
-            }
-            if (now->key == key) {
-                return now;
-            }
+            if (now == nullptr) { return nullptr; }
+            if (now->key == key) { return now; }
             if (key <= now->key) {
                 now = now->left;
             } else {
@@ -97,12 +87,10 @@ struct treap {
     }
 
     treap_node<T> *insert(treap_node<T> *now, treap_node<T> *new_node) {
-        if (now == nullptr) {
-            return new_node;
-        }
+        if (now == nullptr) { return new_node; }
         if (new_node->priority > now->priority) {
             pair<treap_node<T> *, treap_node<T> *> s =
-                split(now, new_node->key);
+              split(now, new_node->key);
             new_node->left = s.first;
             new_node->right = s.second;
             update_sub_tree_size(new_node);
@@ -135,9 +123,7 @@ struct treap {
     }
 
     bool erase(T key) {
-        if (find(key) == nullptr) {
-            return false;
-        }
+        if (find(key) == nullptr) { return false; }
         root = erase(root, key);
         return true;
     }
@@ -151,9 +137,7 @@ struct treap {
                 now = now->left;
             } else {
                 k -= left_size;
-                if (k == 1) {
-                    return now->key;
-                }
+                if (k == 1) { return now->key; }
                 k--;
                 now = now->right;
             }
@@ -163,9 +147,7 @@ struct treap {
     inline int size() { return get_sub_tree_size(root); }
 
     void print_treap(treap_node<T> *now) {
-        if (now == nullptr) {
-            return;
-        }
+        if (now == nullptr) { return; }
         print_treap(now->left);
         cerr << now->key << " ";
         print_treap(now->right);
@@ -220,9 +202,7 @@ int main() {
                 cout << "-0.5\n";
             } else {
                 cout << (m1 + m2) / 2LL;
-                if ((m1 + m2) % 2LL) {
-                    cout << ".5";
-                }
+                if ((m1 + m2) % 2LL) { cout << ".5"; }
                 cout << "\n";
             }
         }

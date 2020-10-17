@@ -19,9 +19,7 @@ struct linear_sieve {
                 if (p * i >= n) break;
                 is_prime[p * i] = false;
                 min_prime[p * i] = p;
-                if (i % p == 0) {
-                    break;
-                }
+                if (i % p == 0) { break; }
             }
         }
     }

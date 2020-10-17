@@ -4,9 +4,7 @@ using namespace std;
 
 int val1(string s) {
     char res = 0;
-    for (int i = 0; i < s.size(); i++) {
-        res ^= s[i];
-    }
+    for (int i = 0; i < s.size(); i++) { res ^= s[i]; }
     return res;
 }
 
@@ -58,14 +56,10 @@ int main() {
                     ok = false;
                 }
             }
-            if (ok) {
-                un++;
-            }
+            if (ok) { un++; }
             for (int j = 0; j < i; j++) {
                 if (a[i] == a[j]) {
-                    if (b[i] != b[j] || c[i] != c[j]) {
-                        col++;
-                    }
+                    if (b[i] != b[j] || c[i] != c[j]) { col++; }
                 }
             }
         }

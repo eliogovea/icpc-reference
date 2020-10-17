@@ -4,7 +4,7 @@ int main() {
     constexpr int modulo = 1000 * 1000 * 1000 + 7;
     using int_mod = int32_mod_t<modulo>;
 
-    int_mod x{2}, y{1};
+    int_mod x {2}, y {1};
     std::cout << x.value << " " << y.value << "\n";
 
     auto z = y / x;

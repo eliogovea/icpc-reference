@@ -439,9 +439,7 @@ void testPollardRho() {
     LL n = 45;
     // LL n = 12123423422424LL;
     auto f = factorize(n);
-    for (auto x : f) {
-        cerr << "(" << x.first << ", " << x.second << ")";
-    }
+    for (auto x : f) { cerr << "(" << x.first << ", " << x.second << ")"; }
     cerr << "\n";
 }
 
@@ -456,25 +454,19 @@ void testIsPrime() {
 }
 
 void testFibonacci() {
-    for (int i = 1; i < 20; i++) {
-        cerr << fib(i, 1000000007) << " ";
-    }
+    for (int i = 1; i < 20; i++) { cerr << fib(i, 1000000007) << " "; }
     cerr << "\n";
 }
 
 void testPartitions() {
     auto p = partitions(10, 1000000007);
-    for (auto x : p) {
-        cerr << x << " ";
-    }
+    for (auto x : p) { cerr << x << " "; }
     cerr << "\n";
 }
 
 void testCountPrimes() {
     vector<LL> test = {100, 1000000, 100000000000LL};
-    for (auto x : test) {
-        cerr << x << " " << countPrimes(x) << "\n";
-    }
+    for (auto x : test) { cerr << x << " " << countPrimes(x) << "\n"; }
 }
 
 int main() {

@@ -14,7 +14,7 @@ class SlowRangeQueriesSolver {
     }
     T RangeQuery(std::size_t from, std::size_t to) const {
         assert(0 <= from && from < to && to <= values_.size());
-        T result{};
+        T result {};
         for (std::size_t i = from; i < to; i++) {
             result = merge_(result, values_[i]);
         }
@@ -22,7 +22,7 @@ class SlowRangeQueriesSolver {
     }
 
    private:
-    std::vector<T>         values_;
+    std::vector<T> values_;
     std::function<T(T, T)> merge_;
 };
 
@@ -32,21 +32,21 @@ void Test() {
     auto add = [](const auto& lhs, const auto& rhs) { return lhs + rhs; };
 
     SlowRangeQueriesSolver<std::int64_t> slow(size, add);
-    FenwickTree<std::int64_t>            fast(size, add);
+    FenwickTree<std::int64_t> fast(size, add);
 
-    const std::int32_t steps    = 1000;
+    const std::int32_t steps = 1000;
     const std::int64_t maxDelta = 1000 * 1000;
     for (std::int32_t i = 0; i < steps; i++) {
         if (rand() & 1) {
-            std::size_t  index = rand() % size;
+            std::size_t index = rand() % size;
             std::int64_t delta = rand() % maxDelta;
             slow.Update(index, delta);
             fast.Update(index, delta);
         } else {
             std::size_t from = rand() % size;
-            std::size_t to   = rand() % size;
+            std::size_t to = rand() % size;
             if (to <= from) { std::swap(from, to); }
-            auto slowAnwer  = slow.RangeQuery(from, to + 1);
+            auto slowAnwer = slow.RangeQuery(from, to + 1);
             auto fastAnswer = fast.RangeQuery(from, to + 1);
             if (slowAnwer != fastAnswer) {
                 std::cout << "ERROR: expected" << slowAnwer << ", found"

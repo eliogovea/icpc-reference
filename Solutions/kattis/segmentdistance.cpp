@@ -20,9 +20,7 @@ point_LL operator-(const point_LL &P, const point_LL &Q) {
 }
 
 bool operator<(const point_LL &P, const point_LL &Q) {
-    if (P.x != Q.x) {
-        return P.x < Q.x;
-    }
+    if (P.x != Q.x) { return P.x < Q.x; }
     return P.y < Q.y;
 }
 
@@ -45,12 +43,8 @@ inline LD point_line_distance_LL(point_LL P, point_LL A, point_LL B) {
 }
 
 inline LD point_segment_distance_LL(point_LL P, point_LL A, point_LL B) {
-    if (dot_LL(P - A, B - A) <= 0) {
-        return length(P - A);
-    }
-    if (dot_LL(P - A, B - A) >= dot_LL(B - A, B - A)) {
-        return length(P - B);
-    }
+    if (dot_LL(P - A, B - A) <= 0) { return length(P - A); }
+    if (dot_LL(P - A, B - A) >= dot_LL(B - A, B - A)) { return length(P - B); }
     return point_line_distance_LL(P, A, B);
 }
 
@@ -82,41 +76,27 @@ inline point_LD intersect_LD(point_LD A, point_LD B, point_LD C, point_LD D) {
 
 vector<point_LD> intersect_LL(point_LL A, point_LL B, point_LL C, point_LL D) {
     if (A == B && C == D) {
-        if (A == C) {
-            return vector<point_LD>(1, get(A));
-        }
+        if (A == C) { return vector<point_LD>(1, get(A)); }
         return vector<point_LD>();
     }
     if (A == B) {
-        if (inside(A, C, D)) {
-            return vector<point_LD>(1, get(A));
-        }
+        if (inside(A, C, D)) { return vector<point_LD>(1, get(A)); }
         return vector<point_LD>();
     }
     if (C == D) {
-        if (inside(C, A, B)) {
-            return vector<point_LD>(1, get(C));
-        }
+        if (inside(C, A, B)) { return vector<point_LD>(1, get(C)); }
         return vector<point_LD>();
     }
     if (sign(cross_LL(B - A, D - C)) == 0) {
         if (sign(cross_LL(B - A, C - A)) == 0) {
-            if (B < A) {
-                swap(A, B);
-            }
-            if (D < C) {
-                swap(C, D);
-            }
+            if (B < A) { swap(A, B); }
+            if (D < C) { swap(C, D); }
             if (C < A) {
                 swap(A, C);
                 swap(B, D);
             }
-            if (B < C) {
-                return vector<point_LD>();
-            }
-            if (B == C) {
-                return vector<point_LD>(1, get(B));
-            }
+            if (B < C) { return vector<point_LD>(); }
+            if (B == C) { return vector<point_LD>(1, get(B)); }
             vector<point_LD> res(1, get(C));
             if (D < B) {
                 res.push_back(get(D));
@@ -139,9 +119,7 @@ vector<point_LD> intersect_LL(point_LL A, point_LL B, point_LL C, point_LL D) {
 
 LD segment_segment_distance(point_LL A, point_LL B, point_LL C, point_LL D) {
     vector<point_LD> v = intersect_LL(A, B, C, D);
-    if (v.size()) {
-        return 0.0;
-    }
+    if (v.size()) { return 0.0; }
     return min(min(point_segment_distance_LL(A, C, D),
                    point_segment_distance_LL(B, C, D)),
                min(point_segment_distance_LL(C, A, B),

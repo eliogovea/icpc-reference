@@ -441,9 +441,7 @@ void testPollardRho() {
     LL n = 45;
     // LL n = 12123423422424LL;
     auto f = factorize(n);
-    for (auto x : f) {
-        cerr << "(" << x.first << ", " << x.second << ")";
-    }
+    for (auto x : f) { cerr << "(" << x.first << ", " << x.second << ")"; }
     cerr << "\n";
 }
 
@@ -458,25 +456,19 @@ void testIsPrime() {
 }
 
 void testFibonacci() {
-    for (int i = 1; i < 20; i++) {
-        cerr << fib(i, 1000000007) << " ";
-    }
+    for (int i = 1; i < 20; i++) { cerr << fib(i, 1000000007) << " "; }
     cerr << "\n";
 }
 
 void testPartitions() {
     auto p = partitions(10, 1000000007);
-    for (auto x : p) {
-        cerr << x << " ";
-    }
+    for (auto x : p) { cerr << x << " "; }
     cerr << "\n";
 }
 
 void testCountPrimes() {
     vector<LL> test = {100, 1000000, 100000000000LL};
-    for (auto x : test) {
-        cerr << x << " " << countPrimes(x) << "\n";
-    }
+    for (auto x : test) { cerr << x << " " << countPrimes(x) << "\n"; }
 }
 
 }  // namespace NumberTheory
@@ -643,29 +635,19 @@ vector<int> slowMul(const vector<int>& P, const vector<int>& Q) {
     assert(P.size() > 0 && Q.size() > 0);
     vector<int> R(P.size() + Q.size() - 1);
     for (int i = 0; i < P.size(); i++) {
-        for (int j = 0; j < Q.size(); j++) {
-            add(R[i + j], mul(P[i], Q[j]));
-        }
+        for (int j = 0; j < Q.size(); j++) { add(R[i + j], mul(P[i], Q[j])); }
     }
     return R;
 }
 
 bool checkInverse(const vector<int>& P, const vector<int>& Q) {
     assert(P.size() == Q.size());
-    if (Q.size() == 0) {
-        return (P[0] == 0);
-    }
+    if (Q.size() == 0) { return (P[0] == 0); }
     for (int i = 0; i < P.size(); i++) {
         int s = 0;
-        for (int j = 0; j <= i; j++) {
-            add(s, mul(P[j], Q[i - j]));
-        }
-        if (i == 0 && s != 1) {
-            return false;
-        }
-        if (i != 0 && s != 0) {
-            return false;
-        }
+        for (int j = 0; j <= i; j++) { add(s, mul(P[j], Q[i - j])); }
+        if (i == 0 && s != 1) { return false; }
+        if (i != 0 && s != 0) { return false; }
     }
     return true;
 }
@@ -678,33 +660,23 @@ vector<int> slowInverse(const vector<int>& P) {
     Q[0] = ic;
     for (int i = 1; i < P.size(); i++) {
         int s = 0;
-        for (int j = i; j > 0; j--) {
-            add(s, mul(P[j], Q[i - j]));
-        }
-        if (s != 0) {
-            s = M - s;
-        }
+        for (int j = i; j > 0; j--) { add(s, mul(P[j], Q[i - j])); }
+        if (s != 0) { s = M - s; }
         s = mul(s, ic);
         Q[i] = s;
     }
 }
 
 vector<int> generateRandom(int n = -1) {
-    if (n == -1) {
-        n = 1 + rand();
-    }
+    if (n == -1) { n = 1 + rand(); }
     vector<int> P(n);
-    for (auto& c : P) {
-        c = rand() % M;
-    }
+    for (auto& c : P) { c = rand() % M; }
     return P;
 }
 
 void debug(const vector<int>& P, bool name) {
     cerr << name << ": ";
-    for (auto c : P) {
-        cerr << c << " ";
-    }
+    for (auto c : P) { cerr << c << " "; }
     cerr << "\n";
 }
 
@@ -778,9 +750,7 @@ void startTesting(int cntTests = 10) {
         cerr << "testing multiplication\n";
         int passed = 0;
         for (int i = 0; i < cntTests; i++) {
-            if (singleMulTest()) {
-                passed++;
-            }
+            if (singleMulTest()) { passed++; }
         }
         cerr << "testing result: \n";
         cerr << "passed " << passed << " tests of " << cntTests << "\n";
@@ -791,9 +761,7 @@ void startTesting(int cntTests = 10) {
         cerr << "testing inverse\n";
         int passed = 0;
         for (int i = 0; i < cntTests; i++) {
-            if (singleInverseTest()) {
-                passed++;
-            }
+            if (singleInverseTest()) { passed++; }
         }
         cerr << "testing result: \n";
         cerr << "passed " << passed << " tests of " << cntTests << "\n";
@@ -804,9 +772,7 @@ void startTesting(int cntTests = 10) {
         cerr << "testing exp\n";
         int passed = 0;
         for (int i = 0; i < cntTests; i++) {
-            if (singleExpTest()) {
-                passed++;
-            }
+            if (singleExpTest()) { passed++; }
         }
         cerr << "testing result:\n";
         cerr << "passed " << passed << " tests of " << cntTests << "\n";
@@ -817,9 +783,7 @@ void startTesting(int cntTests = 10) {
         cerr << "testing sqrt\n";
         int passed = 0;
         for (int i = 0; i < cntTests; i++) {
-            if (singleSqrtTest()) {
-                passed++;
-            }
+            if (singleSqrtTest()) { passed++; }
         }
         cerr << "testing result:\n";
         cerr << "passed " << passed << " tests of " << cntTests << "\n";

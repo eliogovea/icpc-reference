@@ -12,9 +12,7 @@ struct cmp {
     cmp(int _x) : x(_x) {}
 
     bool operator()(const query& a, const query& b) {
-        if (a.l / x != b.l / x) {
-            return a.l < b.l;
-        }
+        if (a.l / x != b.l / x) { return a.l < b.l; }
         return a.r < b.r;
     }
 };
@@ -55,9 +53,7 @@ int main() {
             v[f[a[r]]].erase(a[r]);
             f[a[r]]++;
 
-            if (f[a[r]] > top) {
-                top++;
-            }
+            if (f[a[r]] > top) { top++; }
 
             v[f[a[r]]].insert(a[r]);
         }
@@ -65,9 +61,7 @@ int main() {
             v[f[a[r]]].erase(a[r]);
             f[a[r]]--;
 
-            if (v[top].size() == 0) {
-                top--;
-            }
+            if (v[top].size() == 0) { top--; }
 
             v[f[a[r]]].insert(a[r]);
             r--;
@@ -76,9 +70,7 @@ int main() {
             v[f[a[l]]].erase(a[l]);
             f[a[l]]--;
 
-            if (v[top].size() == 0) {
-                top--;
-            }
+            if (v[top].size() == 0) { top--; }
 
             v[f[a[l]]].insert(a[l]);
             l++;
@@ -89,9 +81,7 @@ int main() {
             v[f[a[l]]].erase(a[l]);
             f[a[l]]++;
 
-            if (f[a[l]] > top) {
-                top++;
-            }
+            if (f[a[l]] > top) { top++; }
 
             v[f[a[l]]].insert(a[l]);
         }
@@ -101,7 +91,5 @@ int main() {
         }
     }
 
-    for (int i = 0; i < m; i++) {
-        cout << answer[i] << "\n";
-    }
+    for (int i = 0; i < m; i++) { cout << answer[i] << "\n"; }
 }

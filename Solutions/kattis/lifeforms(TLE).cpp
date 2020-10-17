@@ -61,9 +61,7 @@ void add(char c) {
                 int clone = getClone(q, length[p] + 1);
                 suffixLink[q] = clone;
                 suffixLink[cur] = clone;
-                while (p != -1 && to[p][c] == q) {
-                    to[p][c] = clone;
-                }
+                while (p != -1 && to[p][c] == q) { to[p][c] = clone; }
             }
         }
         last = cur;
@@ -85,14 +83,10 @@ vector<string> ans;
 void solve() {
     bool firstCase = true;
     while (cin >> n && n) {
-        if (!firstCase) {
-            cout << "\n";
-        }
+        if (!firstCase) { cout << "\n"; }
         firstCase = false;
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < size; j++) {
-                used[i][j] = false;
-            }
+            for (int j = 0; j < size; j++) { used[i][j] = false; }
             ok[i] = false;
         }
         init();
@@ -108,18 +102,10 @@ void solve() {
         for (int i = 0; i < size; i++) {
             maxLength = max(maxLength, length[i]);
         }
-        for (int i = 0; i <= maxLength; i++) {
-            freq[i] = 0;
-        }
-        for (int i = 0; i < size; i++) {
-            freq[length[i]]++;
-        }
-        for (int i = 1; i <= maxLength; i++) {
-            freq[i] += freq[i - 1];
-        }
-        for (int i = 0; i < size; i++) {
-            order[--freq[length[i]]] = i;
-        }
+        for (int i = 0; i <= maxLength; i++) { freq[i] = 0; }
+        for (int i = 0; i < size; i++) { freq[length[i]]++; }
+        for (int i = 1; i <= maxLength; i++) { freq[i] += freq[i - 1]; }
+        for (int i = 0; i < size; i++) { order[--freq[length[i]]] = i; }
         for (int i = size - 1; i > 0; i--) {
             int x = order[i];
             for (int j = 0; j < n; j++) {
@@ -129,14 +115,10 @@ void solve() {
         int ansLength = 0;
         for (int i = size - 1; i > 0; i--) {
             int x = order[i];
-            if (length[x] < ansLength) {
-                break;
-            }
+            if (length[x] < ansLength) { break; }
             int cnt = 0;
             for (int j = 0; j < n; j++) {
-                if (used[j][x]) {
-                    cnt++;
-                }
+                if (used[j][x]) { cnt++; }
             }
             if (cnt > n / 2) {
                 ok[x] = true;
@@ -171,9 +153,7 @@ void solve() {
             }
         }
         sort(ans.begin(), ans.end());
-        for (int i = 0; i < ans.size(); i++) {
-            cout << ans[i] << "\n";
-        }
+        for (int i = 0; i < ans.size(); i++) { cout << ans[i] << "\n"; }
     }
 }
 

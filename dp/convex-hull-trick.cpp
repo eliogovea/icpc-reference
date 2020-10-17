@@ -51,10 +51,10 @@ int main() {
     for (int i = 0; i < n; i++) cin >> a[i];
     for (int i = 0; i < n; i++) cin >> b[i];
     CH.clear();
-    CH.add((line){b[0], 0});
+    CH.add((line) {b[0], 0});
     for (int i = 1; i < n; i++) {
         dp[i] = CH.get_min(a[i]);
-        CH.add((line){b[i], dp[i]});
+        CH.add((line) {b[i], dp[i]});
     }
     cout << dp[n - 1] << "\n";
 }

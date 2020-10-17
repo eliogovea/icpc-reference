@@ -13,19 +13,13 @@ const double EPS = 1e-10;
 const double PI = 2.0 * asin(1);
 
 inline int sign(const double x) {
-    if (abs(x) < EPS) {
-        return 0;
-    }
-    if (x < 0.0) {
-        return -1;
-    }
+    if (abs(x) < EPS) { return 0; }
+    if (x < 0.0) { return -1; }
     return 1;
 }
 
 inline bool is_in(double a, double b, double x) {
-    if (a > b) {
-        swap(a, b);
-    }
+    if (a > b) { swap(a, b); }
     return (a - EPS <= x && x <= b + EPS);
 }
 
@@ -36,29 +30,21 @@ struct point {
 };
 
 bool operator<(const point &P, const point &Q) {
-    if (abs(P.y - Q.y) > EPS) {
-        return P.y < Q.y;
-    }
-    if (abs(P.x - Q.x) > EPS) {
-        return P.x < Q.x;
-    }
+    if (abs(P.y - Q.y) > EPS) { return P.y < Q.y; }
+    if (abs(P.x - Q.x) > EPS) { return P.x < Q.x; }
     return false;
 }
 
 struct compare_x {
     bool operator()(const point &P, const point &Q) {
-        if (abs(P.x - Q.x) > EPS) {
-            return P.x < Q.x;
-        }
+        if (abs(P.x - Q.x) > EPS) { return P.x < Q.x; }
         return P.y < Q.y;
     }
 };
 
 struct compare_y {
     bool operator()(const point &P, const point &Q) {
-        if (abs(P.y - Q.y) > EPS) {
-            return P.y < Q.y;
-        }
+        if (abs(P.y - Q.y) > EPS) { return P.y < Q.y; }
         return P.x < Q.x;
     }
 };
@@ -84,14 +70,10 @@ point operator/(const point &P, const double k) {
 
 inline int half_plane(const point &P) {
     if (abs(P.y) > EPS) {
-        if (P.y > 0) {
-            return 1;
-        }
+        if (P.y > 0) { return 1; }
         return -1;
     }
-    if (P.x > 0) {
-        return 1;
-    }
+    if (P.x > 0) { return 1; }
     return -1;
 }
 
@@ -116,9 +98,7 @@ inline double dist(const point &P, const point &Q) {
 
 /// returns true if P belongs in segment AB
 inline bool is_in(point A, point B, point P) {
-    if (abs(cross(B - A, P - A)) > EPS) {
-        return false;
-    }
+    if (abs(cross(B - A, P - A)) > EPS) { return false; }
     return (is_in(A.x, B.x, P.x) && is_in(A.y, B.y, P.y));
 }
 
@@ -140,9 +120,7 @@ inline double point_to_line(const point &P, const point &A, const point &B) {
 /// distance from point P to segment AB
 inline double point_to_segment(const point &P, const point &A, const point &B) {
     point PP = project(P, A, B);
-    if (is_in(A, B, PP)) {
-        return dist(P, PP);
-    }
+    if (is_in(A, B, PP)) { return dist(P, PP); }
     return min(dist(P, A), dist(P, B));
 }
 
@@ -158,9 +136,7 @@ inline point intersect(const point &A, const point &B, const point &C,
 inline double segment_to_segment(const point &A, const point &B, const point &C,
                                  const point &D) {
     point I = intersect(A, B, C, D);
-    if (is_in(A, B, I) && is_in(C, D, I)) {
-        return 0.0;
-    }
+    if (is_in(A, B, I) && is_in(C, D, I)) { return 0.0; }
     return min(min(point_to_segment(A, C, D), point_to_segment(B, C, D)),
                min(point_to_segment(C, A, B), point_to_segment(D, A, B)));
 }
@@ -199,32 +175,30 @@ inline vector<pair<point, point> > common_tangents(point C1, double r1,
         swap(C1, C2);
         swap(r1, r2);
     }
-    if (r1 > d + r2 + EPS) {
-        return vector<pair<point, point> >();
-    }
+    if (r1 > d + r2 + EPS) { return vector<pair<point, point> >(); }
     if (abs(r1 - d - r1) <= EPS) {
         return vector<pair<point, point> >(
-            1, make_pair(C1 + (C2 - C1) * (r1 / d), C1 + (C2 - C1) * (r1 / d)));
+          1, make_pair(C1 + (C2 - C1) * (r1 / d), C1 + (C2 - C1) * (r1 / d)));
     }
     vector<pair<point, point> > answer;
     {
         pair<point, point> t = point_circle_tangent(C2, C1, r1 - r2);
         point V_first =
-            rotate_point((t.first - C2) * (r2 / dist(t.first, C2)), 0.5 * PI);
-        point V_second = rotate_point(
-            (t.second - C2) * (r2 / dist(t.second, C2)), -0.5 * PI);
+          rotate_point((t.first - C2) * (r2 / dist(t.first, C2)), 0.5 * PI);
+        point V_second =
+          rotate_point((t.second - C2) * (r2 / dist(t.second, C2)), -0.5 * PI);
         answer.push_back(make_pair(C2 + V_first, t.first + V_first));
         answer.push_back(make_pair(C2 + V_second, t.second + V_second));
     }
     if (abs(d - r1 - r2) <= EPS) {
         answer.push_back(
-            make_pair(C1 + (C2 - C1) * (r1 / d), C1 + (C2 - C1) * (r1 / d)));
+          make_pair(C1 + (C2 - C1) * (r1 / d), C1 + (C2 - C1) * (r1 / d)));
     } else if (d > r1 + r2 + EPS) {
         pair<point, point> t = point_circle_tangent(C2, C1, r1 + r2);
         point V_first =
-            rotate_point((t.first - C2) * (r2 / dist(t.first, C2)), -0.5 * PI);
+          rotate_point((t.first - C2) * (r2 / dist(t.first, C2)), -0.5 * PI);
         point V_second =
-            rotate_point((t.second - C2) * (r2 / dist(t.second, C2)), 0.5 * PI);
+          rotate_point((t.second - C2) * (r2 / dist(t.second, C2)), 0.5 * PI);
         answer.push_back(make_pair(C2 + V_first, t.first + V_first));
         answer.push_back(make_pair(C2 + V_second, t.second + V_second));
     }
@@ -236,12 +210,8 @@ inline vector<point> line_circle_intersect(const point &A, const point &B,
                                            const point &C, const double r) {
     point PC = project(C, A, B);
     double d = dist(C, PC);
-    if (d > r + EPS) {
-        return vector<point>();
-    }
-    if (abs(d - r) <= EPS) {
-        return vector<point>(1, PC);
-    }
+    if (d > r + EPS) { return vector<point>(); }
+    if (abs(d - r) <= EPS) { return vector<point>(1, PC); }
     double l = sqrt(r * r - d * d);
     vector<point> res(2);
     double dAB = dist(A, B);
@@ -258,9 +228,7 @@ vector<point> circle_circle_intersect(point C1, double r1, point C2,
     }
     double d = dist(C1, C2);
     assert(!(d <= EPS && abs(r1 - r2) <= EPS));
-    if (d > r1 + r2 + EPS || r1 > d + r2 + EPS) {
-        return vector<point>();
-    }
+    if (d > r1 + r2 + EPS || r1 > d + r2 + EPS) { return vector<point>(); }
     if (abs(d - (r1 + r2)) <= EPS || abs(r1 - (d + r2)) <= EPS) {
         return vector<point>(1, C1 + (C2 - C1) * (r1 / d));
     }
@@ -302,9 +270,9 @@ inline double closest_pair_of_points(vector<point> pts) {
             last++;
         }
         set<point>::iterator lo =
-            candidates.lower_bound(point(-INF, pts[i].y - res - EPS));
+          candidates.lower_bound(point(-INF, pts[i].y - res - EPS));
         set<point>::iterator hi =
-            candidates.upper_bound(point(INF, pts[i].y + res + EPS));
+          candidates.upper_bound(point(INF, pts[i].y + res + EPS));
         while (lo != hi) {
             res = min(res, dist(pts[i], *lo));
             lo++;
@@ -323,12 +291,8 @@ double convex_diameter(vector<point> &polygon) {
     int p1 = 0;
     for (int i = 1; i < n; i++) {
         // < compare y first then x
-        if (polygon[i] < polygon[p0]) {
-            p0 = i;
-        }
-        if (polygon[p1] < polygon[i]) {
-            p1 = i;
-        }
+        if (polygon[i] < polygon[p0]) { p0 = i; }
+        if (polygon[p1] < polygon[i]) { p1 = i; }
     }
     // cerr << "start:\n";
     // cerr << p0 << " " << polygon[p0].x << " " << polygon[p0].y << "\n";
@@ -363,12 +327,8 @@ double convex_width(const vector<point> &polygon) {
     int p1 = 0;
     for (int i = 1; i < n; i++) {
         // < compare y first then x
-        if (polygon[i] < polygon[p0]) {
-            p0 = i;
-        }
-        if (polygon[p1] < polygon[i]) {
-            p1 = i;
-        }
+        if (polygon[i] < polygon[p0]) { p0 = i; }
+        if (polygon[p1] < polygon[i]) { p1 = i; }
     }
     double res = polygon[p1].y - polygon[p0].y;
     int c0 = p0;
@@ -439,9 +399,7 @@ void testPolygonArea() {
     int n;
     cin >> n;
     vector<point> polygon(n);
-    for (int i = 0; i < n; i++) {
-        read(polygon[i]);
-    }
+    for (int i = 0; i < n; i++) { read(polygon[i]); }
     cout.precision(1);
     cout << fixed << abs_area(polygon) << "\n";
 }
@@ -459,9 +417,7 @@ void test_line_circle_intersect() {
         cin >> A.x >> A.y >> B.x >> B.y;
         vector<point> answer = line_circle_intersect(A, B, C, r);
         assert(answer.size() != 0);
-        if (answer.size() == 1) {
-            answer.push_back(answer.back());
-        }
+        if (answer.size() == 1) { answer.push_back(answer.back()); }
         if (answer[1].x < answer[0].x ||
             (answer[1].x == answer[0].x && answer[1].y < answer[0].y)) {
             swap(answer[0], answer[1]);
@@ -479,9 +435,7 @@ void test_circle_circle_intersect() {
     cin >> C1.x >> C1.y >> r1 >> C2.x >> C2.y >> r2;
     vector<point> answer = circle_circle_intersect(C1, r1, C2, r2);
     assert(answer.size() != 0);
-    if (answer.size() == 1) {
-        answer.push_back(answer.back());
-    }
+    if (answer.size() == 1) { answer.push_back(answer.back()); }
     if (answer[1].x < answer[0].x ||
         (answer[1].x == answer[0].x && answer[1].y < answer[0].y)) {
         swap(answer[0], answer[1]);
@@ -499,9 +453,7 @@ void test_common_tangents() {
     cin >> C1.x >> C1.y >> r1 >> C2.x >> C2.y >> r2;
     vector<pair<point, point> > ct = common_tangents(C1, r1, C2, r2);
     vector<point> answer;
-    for (int i = 0; i < ct.size(); i++) {
-        answer.push_back(ct[i].first);
-    }
+    for (int i = 0; i < ct.size(); i++) { answer.push_back(ct[i].first); }
     sort(answer.begin(), answer.end(), compare_x());
     for (int i = 0; i < answer.size(); i++) {
         cout << fixed << answer[i].x << " " << fixed << answer[i].y << "\n";
@@ -514,9 +466,7 @@ void test_convex_diamenter() {
     int n;
     cin >> n;
     vector<point> polygon(n);
-    for (int i = 0; i < n; i++) {
-        cin >> polygon[i].x >> polygon[i].y;
-    }
+    for (int i = 0; i < n; i++) { cin >> polygon[i].x >> polygon[i].y; }
     double answer = convex_diameter(polygon);
     cout << fixed << answer << "\n";
 }

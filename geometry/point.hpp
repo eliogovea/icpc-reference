@@ -10,10 +10,10 @@ template <typename T>
 constexpr std::int32_t sign(T x) {
     if constexpr (std::is_floating_point<T>::value) {
         static constexpr double epsilon =
-            1e-9;  // TODO change epsilon depending on the problem
+          1e-9;  // TODO change epsilon depending on the problem
         return x < -epsilon ? -1 : (epsilon < x);
     }
-    return x < T{0} ? -1 : (T{0} < x);
+    return x < T {0} ? -1 : (T {0} < x);
 }
 
 template <typename T>
@@ -37,7 +37,7 @@ struct point {
 
     template <typename T_>
     explicit operator std::pair<T_, T_>() const {
-        return std::pair<T_, T_>{static_cast<T_>(x), static_cast<T_>(y)};
+        return std::pair<T_, T_> {static_cast<T_>(x), static_cast<T_>(y)};
     }
 
     friend std::istream& operator>>(std::istream& input, point& P) {
@@ -112,26 +112,20 @@ struct point {
     }
 
     static auto half_plane(const point& P) -> int const {
-        if (P.y != 0) {
-            return P.y < 0 ? -1 : +1;
-        }
+        if (P.y != 0) { return P.y < 0 ? -1 : +1; }
         return P.x < 0 ? -1 : +1;
     }
 
     static auto xy_comparator() {
         return [](const point& P, const point& Q) {
-            if (sign(P.x - Q.x) != 0) {
-                return sign(P.x - Q.x) == -1;
-            }
+            if (sign(P.x - Q.x) != 0) { return sign(P.x - Q.x) == -1; }
             return sign(P.y - Q.y) == -1;
         };
     }
 
     static auto yx_comparator() {
         return [](const point& P, const point& Q) {
-            if (sign(P.y - Q.y) != 0) {
-                return sign(P.y - Q.y) == -1;
-            }
+            if (sign(P.y - Q.y) != 0) { return sign(P.y - Q.y) == -1; }
             return sign(P.x - Q.x) == -1;
         };
     }
@@ -140,13 +134,9 @@ struct point {
         return [O](const point& P, const point& Q) {
             auto hP = half_plane(P);
             auto hQ = half_plane(Q);
-            if (hP != hQ) {
-                return hP < hQ;
-            }
+            if (hP != hQ) { return hP < hQ; }
             auto c = sign(cross(P - O, Q - O));
-            if (c != 0) {
-                return (c > 0);
-            }
+            if (c != 0) { return (c > 0); }
             return sign(norm(P - O) - norm(Q - O)) == -1;
         };
     }

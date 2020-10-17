@@ -14,8 +14,6 @@ int main() {
             }
         }
     }
-    if (n > 1) {
-        ans++;
-    }
+    if (n > 1) { ans++; }
     cout << ans << "\n";
 }

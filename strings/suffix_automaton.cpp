@@ -88,7 +88,7 @@ sa_node* build(vector<string>& s) {
     for (sa_node* now = all; now != first_free; now++) {
         if (now->suffix_link != nullptr) {
             now->suffix_link->inv_suffix_link.push_back(make_pair(
-                s[now->id][now->pos - now->suffix_link->max_length], now));
+              s[now->id][now->pos - now->suffix_link->max_length], now));
         }
     }
     for (sa_node* now = all; now != first_free; now++)

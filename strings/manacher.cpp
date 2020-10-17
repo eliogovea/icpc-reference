@@ -7,9 +7,7 @@ vector<int> manacher(const T& s, int n) {
     vector<int> len(2 * n - 1);
     for (int i = 0, l = 0, r = -1; i < 2 * n - 1; i++) {
         int x = (i + 1) >> 1, y = i >> 1, z = 0;
-        if (x < r) {
-            z = min(len[2 * (l + r) - i], r - x);
-        }
+        if (x < r) { z = min(len[2 * (l + r) - i], r - x); }
         while (0 <= x - z - 1 && y + z + 1 < n &&
                s[x - z - 1] == s[y + z + 1]) {
             z++;
@@ -50,15 +48,11 @@ void timus_2060() {
             if (x != y) {
                 start[x]--;
             } else {
-                if (x + 1 < n) {
-                    start[x + 1]--;
-                }
+                if (x + 1 < n) { start[x + 1]--; }
             }
 
             end[x]++;
-            if (y + z + 1 < n) {
-                end[y + z + 1]--;
-            }
+            if (y + z + 1 < n) { end[y + z + 1]--; }
         }
     }
 

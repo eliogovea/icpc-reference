@@ -6,9 +6,9 @@
 
 template <typename I>
 I egcd(I a, I b, I& x, I& y) {
-    if (a == I{0}) {
-        x = I{0};
-        y = I{1};
+    if (a == I {0}) {
+        x = I {0};
+        y = I {1};
         return b;
     }
     I g = egcd(b % a, a, y, x);
@@ -25,15 +25,11 @@ struct int_mod_t {
 
     T value;
 
-    int_mod_t(T value_ = T{0}) : value(value_ % modulo) { fix(); }
+    int_mod_t(T value_ = T {0}) : value(value_ % modulo) { fix(); }
 
     void fix() {
-        if (value >= modulo) {
-            value -= modulo;
-        }
-        if (value < 0) {
-            value += modulo;
-        }
+        if (value >= modulo) { value -= modulo; }
+        if (value < 0) { value += modulo; }
     }
 
     int_mod_t inverse() const {
@@ -45,9 +41,7 @@ struct int_mod_t {
         assert(g == 1);
 
         x %= modulo;
-        if (x < 0) {
-            x += modulo;
-        }
+        if (x < 0) { x += modulo; }
 
         assert((v * x) % m == 1);
         return {static_cast<T>(x)};
@@ -56,18 +50,16 @@ struct int_mod_t {
     static T multiply(T lhs, T rhs) {
         static constexpr auto limit32 = 2 * 1000 * 1000 * 1000;
         static constexpr auto limit64 =
-            2LL * 1000LL * 1000LL * 1000LL * 1000LL * 1000LL * 1000LL;
+          2LL * 1000LL * 1000LL * 1000LL * 1000LL * 1000LL * 1000LL;
         if constexpr (sizeof(T) <= 4 || modulo <= limit32) {
             return static_cast<std::int64_t>(lhs) * rhs % modulo;
         }
         if constexpr (modulo < limit64) {
             std::int64_t q = static_cast<std::int64_t>(
-                static_cast<long double>(lhs) * rhs / modulo);
+              static_cast<long double>(lhs) * rhs / modulo);
             std::int64_t r = lhs * rhs - q * modulo;
             r %= modulo;
-            if (r < 0) {
-                r += modulo;
-            }
+            if (r < 0) { r += modulo; }
             return r;
         }
         return static_cast<__int128_t>(lhs) * rhs % modulo;
@@ -124,11 +116,9 @@ struct int_mod_t {
     }
 
     static int_mod_t power(int_mod_t x, std::int64_t n) {
-        int_mod_t y{1};
+        int_mod_t y {1};
         while (n > 0) {
-            if (n & 1) {
-                y *= x;
-            }
+            if (n & 1) { y *= x; }
             x *= x;
             n >>= 1;
         }

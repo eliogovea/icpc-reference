@@ -16,15 +16,11 @@ void fft(vector<base> &a, bool invert) {
             bit >>= 1;
         }
         j += bit;
-        if (i < j) {
-            swap(a[i], a[j]);
-        }
+        if (i < j) { swap(a[i], a[j]); }
     }
     for (int len = 2; len <= n; len <<= 1) {
         double angle = 2.0 * PI / len;
-        if (invert) {
-            angle = -angle;
-        }
+        if (invert) { angle = -angle; }
         base wlen(cos(angle), sin(angle));
         for (int i = 0; i < n; i += len) {
             base w(1);
@@ -38,28 +34,20 @@ void fft(vector<base> &a, bool invert) {
         }
     }
     if (invert) {
-        for (int i = 0; i < n; i++) {
-            a[i] /= n;
-        }
+        for (int i = 0; i < n; i++) { a[i] /= n; }
     }
 }
 
 void square(vector<long long> &p) {
     int len = 1;
-    while (len < p.size()) {
-        len *= 2;
-    }
+    while (len < p.size()) { len *= 2; }
     len *= 2;
     p.resize(len);
     vector<base> fp(p.begin(), p.end());
     fft(fp, false);
-    for (int i = 0; i < len; i++) {
-        fp[i] *= fp[i];
-    }
+    for (int i = 0; i < len; i++) { fp[i] *= fp[i]; }
     fft(fp, true);
-    for (int i = 0; i < len; i++) {
-        p[i] = (long long)(fp[i].real() + 0.5);
-    }
+    for (int i = 0; i < len; i++) { p[i] = (long long)(fp[i].real() + 0.5); }
 }
 
 vector<long long> cdiv(N, 0);
@@ -84,27 +72,15 @@ void build(int x, int l, int r) {
 }
 
 int query(int x, int l, int r, int ql, int qr) {
-    if (l > qr || r < ql) {
-        return -1;
-    }
-    if (l >= ql && r <= qr) {
-        return st[x];
-    }
+    if (l > qr || r < ql) { return -1; }
+    if (l >= ql && r <= qr) { return st[x]; }
     int mid = (l + r) >> 1;
     int q1 = query(2 * x, l, mid, ql, qr);
     int q2 = query(2 * x + 1, mid + 1, r, ql, qr);
-    if (q1 == -1) {
-        return q2;
-    }
-    if (q2 == -1) {
-        return q1;
-    }
-    if (cdiv[q1] > cdiv[q2]) {
-        return q1;
-    }
-    if (cdiv[q2] > cdiv[q1]) {
-        return q2;
-    }
+    if (q1 == -1) { return q2; }
+    if (q2 == -1) { return q1; }
+    if (cdiv[q1] > cdiv[q2]) { return q1; }
+    if (cdiv[q2] > cdiv[q1]) { return q2; }
     return min(q1, q2);
 }
 
@@ -112,9 +88,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
     for (int i = 1; i <= N; i++) {
-        for (int j = i; j <= N; j += i) {
-            cdiv[j]++;
-        }
+        for (int j = i; j <= N; j += i) { cdiv[j]++; }
     }
     square(cdiv);
     build(1, 1, N - 1);

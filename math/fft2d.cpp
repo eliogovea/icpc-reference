@@ -11,9 +11,7 @@ const double PI = acos(-1.0);
 void fft(vector<base>& P, bool invert) {
     int n = P.size();
     int ln = 0;
-    while ((1 << ln) < n) {
-        ln++;
-    }
+    while ((1 << ln) < n) { ln++; }
     assert((1 << ln) == n);
     for (int i = 0; i < n; i++) {
         int x = i;
@@ -22,16 +20,12 @@ void fft(vector<base>& P, bool invert) {
             y = (y << 1) | (x & 1);
             x >>= 1;
         }
-        if (y < i) {
-            swap(P[y], P[i]);
-        }
+        if (y < i) { swap(P[y], P[i]); }
     }
     for (int len = 2; len <= n; len <<= 1) {
         int half = len >> 1;
         double angle = 2 * PI / len;
-        if (invert) {
-            angle = -angle;
-        }
+        if (invert) { angle = -angle; }
         base step(cos(angle), sin(angle));
         for (int i = 0; i < n; i += len) {
             base w(1);
@@ -45,35 +39,25 @@ void fft(vector<base>& P, bool invert) {
         }
     }
     if (invert) {
-        for (int i = 0; i < n; i++) {
-            P[i] = P[i] / (double)n;
-        }
+        for (int i = 0; i < n; i++) { P[i] = P[i] / (double)n; }
     }
 }
 
 void fft(vector<vector<base> >& P, bool invert) {
     int n = P.size();
     int m = P[0].size();
-    for (int r = 0; r < n; r++) {
-        fft(P[r], invert);
-    }
+    for (int r = 0; r < n; r++) { fft(P[r], invert); }
     for (int c = 0; c < m; c++) {
         vector<base> Q(n);
-        for (int r = 0; r < n; r++) {
-            Q[r] = P[r][c];
-        }
+        for (int r = 0; r < n; r++) { Q[r] = P[r][c]; }
         fft(Q, invert);
-        for (int r = 0; r < n; r++) {
-            P[r][c] = Q[r];
-        }
+        for (int r = 0; r < n; r++) { P[r][c] = Q[r]; }
     }
 }
 
 inline int fix(int n) {
     int x = 1;
-    while (x <= n) {
-        x <<= 1;
-    }
+    while (x <= n) { x <<= 1; }
     return x;
 }
 
@@ -84,9 +68,7 @@ void solve() {
     vector<vector<int> > ha(na, vector<int>(ma));
 
     for (int r = 0; r < na; r++) {
-        for (int c = 0; c < ma; c++) {
-            cin >> ha[r][c];
-        }
+        for (int c = 0; c < ma; c++) { cin >> ha[r][c]; }
     }
 
     int nb, mb;
@@ -95,9 +77,7 @@ void solve() {
     vector<vector<int> > hb(nb, vector<int>(mb));
 
     for (int r = 0; r < nb; r++) {
-        for (int c = 0; c < mb; c++) {
-            cin >> hb[r][c];
-        }
+        for (int c = 0; c < mb; c++) { cin >> hb[r][c]; }
     }
 
     int n = fix(na);
@@ -105,24 +85,18 @@ void solve() {
 
     vector<vector<base> > Pa(n, vector<base>(m, 0));
     for (int r = 0; r < na; r++) {
-        for (int c = 0; c < ma; c++) {
-            Pa[r][c] = ha[r][c];
-        }
+        for (int c = 0; c < ma; c++) { Pa[r][c] = ha[r][c]; }
     }
 
     vector<vector<base> > Pb(n, vector<base>(m, 0));
     for (int r = 0; r < nb; r++) {
-        for (int c = 0; c < mb; c++) {
-            Pb[nb - 1 - r][mb - 1 - c] = hb[r][c];
-        }
+        for (int c = 0; c < mb; c++) { Pb[nb - 1 - r][mb - 1 - c] = hb[r][c]; }
     }
 
     fft(Pa, false);
     fft(Pb, false);
     for (int r = 0; r < n; r++) {
-        for (int c = 0; c < m; c++) {
-            Pa[r][c] = Pa[r][c] * Pb[r][c];
-        }
+        for (int c = 0; c < m; c++) { Pa[r][c] = Pa[r][c] * Pb[r][c]; }
     }
     fft(Pa, true);
     vector<vector<long long> > sha(na + 1, vector<long long>(ma + 1));
@@ -135,9 +109,7 @@ void solve() {
 
     long long allb = 0;
     for (int r = 0; r < nb; r++) {
-        for (int c = 0; c < mb; c++) {
-            allb += (long long)hb[r][c] * hb[r][c];
-        }
+        for (int c = 0; c < mb; c++) { allb += (long long)hb[r][c] * hb[r][c]; }
     }
 
     auto get = [&sha](int r1, int c1, int r2, int c2) {

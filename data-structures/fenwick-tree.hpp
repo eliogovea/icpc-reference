@@ -8,7 +8,7 @@ template <typename T>
 class FenwickTree {
    public:
     explicit FenwickTree(std::size_t size, std::function<T(T, T)> merge)
-        : values_(size, T{}), merge_{merge} {}
+        : values_(size, T {}), merge_ {merge} {}
     explicit FenwickTree(std::size_t size)
         : FenwickTree(size,
                       [](const T& lhs, const T& rhs) { return lhs + rhs; }) {}
@@ -21,7 +21,7 @@ class FenwickTree {
         }
     }
     T PrefixQuery(std::size_t size) const {
-        T result{};
+        T result {};
         while (size > 0) {
             result = merge_(result, values_[size - 1]);
             size -= (size & -size);
@@ -33,7 +33,7 @@ class FenwickTree {
     }
 
    private:
-    std::vector<T>                       values_;
+    std::vector<T> values_;
     std::function<T(const T&, const T&)> merge_;
 };
 

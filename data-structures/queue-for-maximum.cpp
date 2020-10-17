@@ -18,9 +18,7 @@ struct maxStack {
 
     void push(T x) {
         vals[size] = x;
-        if (size != 0) {
-            x = max(x, vals[size - 1]);
-        }
+        if (size != 0) { x = max(x, vals[size - 1]); }
         maxVals[size] = x;
         size++;
     }
@@ -31,15 +29,11 @@ struct maxStack {
     }
 
     void pop() {
-        if (size > 0) {
-            size--;
-        }
+        if (size > 0) { size--; }
     }
 
     T getMax() {
-        if (size == 0) {
-            return numeric_limits<T>::min();
-        }
+        if (size == 0) { return numeric_limits<T>::min(); }
         return maxVals[size - 1];
     }
 };
@@ -80,9 +74,7 @@ int main() {
     cin >> n >> p >> d;
 
     vector<int> w(n);
-    for (auto& x : w) {
-        cin >> x;
-    }
+    for (auto& x : w) { cin >> x; }
     maxQueue<long long> Q(n);
     long long sum = 0;
     for (int i = 0; i < d; i++) {

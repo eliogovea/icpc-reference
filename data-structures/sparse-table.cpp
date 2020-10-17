@@ -2,42 +2,56 @@
 
 using namespace std;
 
-const int N = 500 * 1000 + 10;
-const int LN = 20;
-const int INF = 1e9;
-
-string s;
-int n;
-int sum[N];
-int maxST[LN][N];
-int minST[LN][N];
-
-int lg[N];
-
-void build() {
-    for (int i = 1; i <= n; i++) {
-        lg[i] = i == 1 ? 0 : lg[i >> 1] + 1;
-        maxST[0][i] = sum[i];
-        minST[0][i] = sum[i];
+template <typename T, const std::size_t MaxLogSize>
+class SparseTable {
+   public:
+    template <typename Iterator>
+    SparseTable(Iterator begin, Iterator end, std::function<T(T, T)> merge)
+        : size_(std::distance(begin, end)), merge_(merge) {
+        Build(begin, end);
     }
-    for (int i = 1; (1 << i) <= n; i++) {
-        for (int l = 1; l + (1 << i) - 1 <= n; l++) {
-            maxST[i][l] =
-                max(maxST[i - 1][l], maxST[i - 1][l + (1 << (i - 1))]);
-            minST[i][l] =
-                min(minST[i - 1][l], minST[i - 1][l + (1 << (i - 1))]);
+
+    SparseTable(std::size_t size, std::function<T(T, T)> merge)
+        : size_(size), merge_(merge) {
+        std::vector<T> dummy(size);
+        Build(dummy.begin(), dummy.end());
+    }
+
+    template <typename Container>
+    SparseTable(const Container& c, std::function<T(T, T)> merge)
+        : size(c.size()), merge_(merge) {
+        Build(c.begin(), c.end());
+    }
+
+   private:
+    template <typename Iterator>
+    void Build(Iterator begin, Iterator end) {
+        log2_[1] = 0;
+        for (std::size_t i = 2; i <= size_; i++) {
+            log2_[i] = log2_[i >> 1] + 1;
+        }
+        for (Iterator i = begin; i != end; i++) {
+            values_[0][i - begin] = static_cast<T>(*i);
+        }
+        for (std::size_t lg = 1; lg <= size_; lg <<= 1) {
+            for (std::size_t i = 0; i + (1 << lg) <= size_; i++) {
+                values_[lg][i] = merge_(values_[lg - 1][i],
+                                        values_[lg - 1][i + (1 << (lg - 1))]);
+            }
         }
     }
-}
 
-inline int queryMax(int l, int r) {
-    int len = r - l + 1;
-    return max(maxST[lg[len]][l], maxST[lg[len]][r - (1 << lg[len]) + 1]);
-}
+    T RangeQuery(std::size_t from, std::size_t to) const {
+        assert(to <= from);
+        assert(0 <= from && to <= size);
+        std::size_t index = log2_[to - from];
+        return merge_(values_[index][from], values_[index][to - (1 << lg)]);
+    }
 
-inline int queryMin(int l, int r) {
-    int len = r - l + 1;
-    return min(minST[lg[len]][l], minST[lg[len]][r - (1 << lg[len]) + 1]);
-}
+    std::size_t size_;
+    std::function<T(T, T)> merge_;
 
-int main() {}
+    static constexpr MaxSize = 1 << MaxLogSize;
+    std::array<std::size_t, MaxSize> log2_;
+    std::array<std::array<T, MaxSize>, MaxSize> values_;
+};
